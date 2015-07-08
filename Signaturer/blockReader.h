@@ -1,13 +1,17 @@
 #pragma once
 class blockReader
 {
-	int byteBlockSize_, currentBlock_;
-	const long long fileSize_;
+	const int byteBlockSize_;
 	boost::interprocess::file_mapping file_;
+	const long long fileSize_;
+	const int blockCount_;
+	int currentBlock_;
 
 public:
 	blockReader(const string &path, int byteBlockSize);
-	std::vector<char> readNextBlock();
+
+	bytevect readNextBlock();
 	void resetPosition();
+	int count();
 };
 

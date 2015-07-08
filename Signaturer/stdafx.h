@@ -17,5 +17,9 @@
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/filesystem.hpp>
+#include <algorithm>
+#include <boost/crc.hpp>
+#include <fstream>
 
 using std::string;
+typedef std::vector<char> bytevect;

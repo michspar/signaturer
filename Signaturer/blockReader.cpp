@@ -3,30 +3,38 @@
 
 using namespace boost::interprocess;
 
-blockReader::blockReader(const string &path, int byteBlockSize)
-	: byteBlockSize_(byteBlockSize), file_(path.c_str(), read_only), fileSize_(boost::filesystem::file_size(path))
+blockReader::blockReader(const string &path, int byteBlockSize): 
+	byteBlockSize_(byteBlockSize), 
+	file_(path.c_str(), read_only), 
+	fileSize_(boost::filesystem::file_size(path)), 
+	blockCount_(int(fileSize_ / byteBlockSize) + (fileSize_ % byteBlockSize ? 1 : 0))
 {	
 	resetPosition();
 }
 
-std::vector<char> blockReader::readNextBlock()
+bytevect blockReader::readNextBlock()
 {
 	auto currentBlockOffset = currentBlock_ * byteBlockSize_;
 
 	if (currentBlockOffset > fileSize_)
-		return std::vector<char>();
+		return bytevect();
 
-	int regionSize = min_value(fileSize_ - currentBlockOffset, (long long)byteBlockSize_);
-	mapped_region memoryRegion(file_, read_only, 0, regionSize);
-	char *begin = static_cast<char *>(memoryRegion.get_address()) + currentBlockOffset;
+	int regionSize = min_value(int(fileSize_ - currentBlockOffset), byteBlockSize_);
+	mapped_region memoryRegion(file_, read_only, currentBlockOffset, regionSize);
+	char *begin = static_cast<char *>(memoryRegion.get_address());
 	char *end = begin + memoryRegion.get_size();
 
 	currentBlock_++;
 
-	return std::vector<char>(begin, end);
+	return bytevect(begin, end);
 }
 
 void blockReader::resetPosition()
 {
 	currentBlock_ = 0;
+}
+
+int blockReader::count()
+{
+	return blockCount_;
 }

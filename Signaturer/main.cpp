@@ -1,4 +1,4 @@
-// Signaturer.cpp : Defines the entry point for the console application.
+// main.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -7,6 +7,7 @@
 namespace po = boost::program_options;
 using std::cout;
 using std::endl;
+using std::exception;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -31,14 +32,14 @@ int _tmain(int argc, _TCHAR* argv[])
 			return 1;
 		}
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		cout << ex.what() << endl;
 
 		return 3;
 	}
 
-	auto blockSizeInKilobytes = vm.count("bs") ? vm["bs"].as<int>() : 1024;
+	auto blockSizeInKilobytes = vm.count("bs") ? vm["bs"].as<int>() : 1;
 	auto in = vm["in"].as<string>();
 	auto out = vm["out"].as<string>();
 
@@ -48,7 +49,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		cout << in << " signature was successfully saved to " << out << endl;
 	}
-	catch (const std::exception &ex)
+	catch (const exception &ex)
 	{
 		cout << "failed to save " << in << " signature:" << endl << ex.what() << endl;
 
