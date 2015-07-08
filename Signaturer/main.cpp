@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		return 3;
 	}
 
-	auto blockSizeInKilobytes = vm.count("bs") ? vm["bs"].as<int>() : 1;
+	auto blockSizeInKilobytes = vm.count("bs") ? vm["bs"].as<int>() : 1024;
 	auto in = vm["in"].as<string>();
 	auto out = vm["out"].as<string>();
 
