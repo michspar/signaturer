@@ -1,8 +1,6 @@
 #pragma once
-class signaturer
+namespace signaturer
 {
-public:
-	signaturer(int kbBlockSize);
-	void signFile(std::string in, std::string out);
-};
+	void signFile(const std::string &in, const std::string &out, int byteBlockSize);
+}
 

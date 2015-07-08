@@ -81,11 +81,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blockReader.h" />
     <ClInclude Include="signaturer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="blockReader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="signaturer.cpp" />
     <ClCompile Include="stdafx.cpp">

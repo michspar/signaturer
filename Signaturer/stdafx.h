@@ -12,3 +12,10 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <fstream>
+#include <boost/interprocess/mapped_region.hpp>
+#include <boost/interprocess/file_mapping.hpp>
+#include <boost/filesystem.hpp>
+
+using std::string;
