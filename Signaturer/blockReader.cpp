@@ -9,29 +9,21 @@ blockReader::blockReader(const string &path, int byteBlockSize):
 	fileSize_(boost::filesystem::file_size(path)), 
 	blockCount_(int(fileSize_ / byteBlockSize) + (fileSize_ % byteBlockSize ? 1 : 0))
 {	
-	resetPosition();
 }
 
-bytevect blockReader::readNextBlock()
+bytevect blockReader::readAt(long long n)
 {
-	auto currentBlockOffset = currentBlock_ * byteBlockSize_;
+	auto blockOffset = n * byteBlockSize_;
 
-	if (currentBlockOffset > fileSize_)
-		return bytevect();
+	if (n < 0 || blockOffset > fileSize_)
+		throw std::exception("invalid block number");
 
-	auto regionSize = min_value(fileSize_ - currentBlockOffset, (long long)byteBlockSize_);
-	mapped_region memoryRegion(file_, read_only, currentBlockOffset, regionSize);
+	auto regionSize = min_value(fileSize_ - blockOffset, (long long)byteBlockSize_);
+	mapped_region memoryRegion(file_, read_only, blockOffset, regionSize);
 	char *begin = static_cast<char *>(memoryRegion.get_address());
 	char *end = begin + memoryRegion.get_size();
 
-	currentBlock_++;
-
 	return bytevect(begin, end);
-}
-
-void blockReader::resetPosition()
-{
-	currentBlock_ = 0;
 }
 
 int blockReader::count()

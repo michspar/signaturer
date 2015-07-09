@@ -8,8 +8,9 @@ class blockWriter
 	std::vector<bool> writtenBlocks_;
 
 public:
+	blockWriter(const blockWriter &) = delete;
 	blockWriter(const string &path, int byteBlockSize);
 	
-	void writeAt(int position, const bytevect &block);
+	void writeAt(long long position, const bytevect &block);
 };
 

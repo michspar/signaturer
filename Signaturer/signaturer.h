@@ -1,11 +1,11 @@
 #pragma once
 class blockWriter;
+class blockReader;
 
 class signaturer
 {
-	static void signBlock(blockWriter &writer, int i, bytevect block);
+	static void signBlock(blockWriter *writer, int i, blockReader *reader);
 	static const int checksumSize;
-	static boost::basic_thread_pool pool;
 
 public:
 	static void signFile(const std::string &in, const std::string &out, int byteBlockSize);

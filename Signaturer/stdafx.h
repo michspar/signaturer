@@ -20,8 +20,10 @@
 #include <algorithm>
 #include <boost/crc.hpp>
 #include <fstream>
-#include <boost/thread/executors/basic_thread_pool.hpp>
-#include <boost/thread/future.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/functional.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/exception/all.hpp>
 
 using std::string;
 typedef std::vector<char> bytevect;

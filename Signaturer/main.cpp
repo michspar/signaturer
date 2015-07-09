@@ -49,7 +49,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		cout << in << " signature was successfully saved to " << out << endl;
 	}
-	catch (const exception &ex)
+	catch (const std::exception &ex)
 	{
 		cout << "failed to save " << in << " signature:" << endl << ex.what() << endl;
 

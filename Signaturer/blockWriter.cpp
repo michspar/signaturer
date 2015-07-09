@@ -12,12 +12,12 @@ blockWriter::blockWriter(const string &path, int byteBlockSize):
 {
 }
 
-void blockWriter::writeAt(int i, const bytevect &block)
+void blockWriter::writeAt(long long position, const bytevect &block)
 {
-	if (writtenBlocks_[i])
+	if (writtenBlocks_[position])
 		throw std::exception("block can be written only once");
 
-	auto offset = i * byteBlockSize_;
+	auto offset = position * byteBlockSize_;
 	auto regionSize = min_value(fileSize_ - offset, (long long)byteBlockSize_);
 
 	if (block.size() != regionSize)
@@ -28,5 +28,5 @@ void blockWriter::writeAt(int i, const bytevect &block)
 
 	std::copy(block.begin(), block.end(), begin);
 
-	writtenBlocks_[i] = true;
+	writtenBlocks_[position] = true;
 }
