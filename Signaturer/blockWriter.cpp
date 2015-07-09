@@ -18,7 +18,7 @@ void blockWriter::writeAt(int i, const bytevect &block)
 		throw std::exception("block can be written only once");
 
 	auto offset = i * byteBlockSize_;
-	auto regionSize = min_value(int(fileSize_ - offset), byteBlockSize_);
+	auto regionSize = min_value(fileSize_ - offset, (long long)byteBlockSize_);
 
 	if (block.size() != regionSize)
 		throw std::exception("invalid block size");

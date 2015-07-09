@@ -19,7 +19,7 @@ bytevect blockReader::readNextBlock()
 	if (currentBlockOffset > fileSize_)
 		return bytevect();
 
-	int regionSize = min_value(int(fileSize_ - currentBlockOffset), byteBlockSize_);
+	auto regionSize = min_value(fileSize_ - currentBlockOffset, (long long)byteBlockSize_);
 	mapped_region memoryRegion(file_, read_only, currentBlockOffset, regionSize);
 	char *begin = static_cast<char *>(memoryRegion.get_address());
 	char *end = begin + memoryRegion.get_size();
