@@ -25,7 +25,6 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/exception/all.hpp>
 #include <cassert>
-#include <boost/timer.hpp>
 
 using std::string;
 typedef std::vector<char> bytevect;

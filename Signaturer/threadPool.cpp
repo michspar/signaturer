@@ -76,11 +76,11 @@ void threadPool::processQueue()
 		func = queue_.front();
 
 		queue_.pop_front();
+		m_.unlock();
 
 		if (isQueueReady())
 			isQueueReady_.notify_all();
 
-		m_.unlock();
 		func();
 	}
 }

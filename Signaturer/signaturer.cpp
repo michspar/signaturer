@@ -11,12 +11,13 @@ void signaturer::signFile(const std::string &in, const std::string &out, int byt
 {
 	blockReader reader(in, byteBlockSize);
 	blockWriter writer(out, checksumSize, reader.count());
-	threadPool tp;
-
-	for (int i = 0; i < reader.count(); i++)
 	{
-		tp.queue(boost::bind(signBlock, reader.readAt(i), &writer, i));
-		//signBlock(reader.readAt(i), &writer, i);
+		threadPool tp;
+
+		for (int i = 0; i < reader.count(); i++)
+		{
+			tp.queue(boost::bind(signBlock, reader.readAt(i), &writer, i));
+		}
 	}
 }
 
