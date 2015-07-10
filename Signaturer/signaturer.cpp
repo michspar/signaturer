@@ -4,31 +4,24 @@
 #include "blockWriter.h"
 #include "threadPool.h"
 
-const int signaturer::checksumSize = boost::crc_16_type::bit_count / 8;
+typedef boost::crc_32_type crc;
+const int signaturer::checksumSize = crc::bit_count / 8;
 
 void signaturer::signFile(const std::string &in, const std::string &out, int byteBlockSize)
 {
 	blockReader reader(in, byteBlockSize);
-
-	{
-		std::ofstream out(out, std::ios_base::binary);
-	}
-
-	boost::filesystem::resize_file(out, reader.count() * checksumSize);
-
-	blockWriter writer(out, checksumSize);
-	threadPool tp(boost::thread::hardware_concurrency());
+	blockWriter writer(out, checksumSize, reader.count());
+	threadPool tp;
 
 	for (int i = 0; i < reader.count(); i++)
 	{
-		tp.queue(boost::bind(signBlock, &writer, i, &reader));
+		tp.queue(boost::bind(signBlock, reader.readAt(i), &writer, i));
 	}
 }
 
-void signaturer::signBlock(blockWriter *writer, int i, blockReader *reader)
+void signaturer::signBlock(bytevect block, blockWriter *writer, int i)
 {
-	boost::crc_16_type crcComputer;
-	auto block = reader->readAt(i);
+	crc crcComputer;
 
 	crcComputer.process_block(block.data(), block.data() + block.size());
 

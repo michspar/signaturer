@@ -45,9 +45,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	try
 	{
+		boost::timer t;
+
 		signaturer::signFile(in, out, blockSizeInKilobytes * 1024);
 
-		cout << in << " signature was successfully saved to " << out << endl;
+		cout << in << " signature was successfully saved to " << out << " in " << t.elapsed() << "s" << endl;
 	}
 	catch (const std::exception &ex)
 	{

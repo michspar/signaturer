@@ -15,8 +15,7 @@ bytevect blockReader::readAt(long long n)
 {
 	auto blockOffset = n * byteBlockSize_;
 
-	if (n < 0 || blockOffset > fileSize_)
-		throw std::exception("invalid block number");
+	assert(n >= 0 && blockOffset < fileSize_);
 
 	auto regionSize = min_value(fileSize_ - blockOffset, (long long)byteBlockSize_);
 	mapped_region memoryRegion(file_, read_only, blockOffset, regionSize);

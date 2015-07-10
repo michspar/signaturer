@@ -4,7 +4,7 @@ class blockReader;
 
 class signaturer
 {
-	static void signBlock(blockWriter *writer, int i, blockReader *reader);
+	static void signBlock(bytevect block, blockWriter *writer, int i);
 	static const int checksumSize;
 
 public:
