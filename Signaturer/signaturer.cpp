@@ -4,7 +4,7 @@
 #include "blockWriter.h"
 #include "threadPool.h"
 
-typedef boost::crc_32_type crc;
+typedef boost::crc_16_type crc;
 const int signaturer::checksumSize = crc::bit_count / 8;
 
 void signaturer::signFile(const std::string &in, const std::string &out, int byteBlockSize)
@@ -16,10 +16,11 @@ void signaturer::signFile(const std::string &in, const std::string &out, int byt
 	for (int i = 0; i < reader.count(); i++)
 	{
 		tp.queue(boost::bind(signBlock, reader.readAt(i), &writer, i));
+		//signBlock(reader.readAt(i), &writer, i);
 	}
 }
 
-void signaturer::signBlock(bytevect block, blockWriter *writer, int i)
+void signaturer::signBlock(bytevect block, blockWriter *writer, int pos)
 {
 	crc crcComputer;
 
@@ -28,5 +29,5 @@ void signaturer::signBlock(bytevect block, blockWriter *writer, int i)
 	auto checksum = crcComputer.checksum();
 	char *pChecksum = reinterpret_cast<char *>(&checksum);
 
-	writer->writeAt(i, bytevect(pChecksum, pChecksum + checksumSize));
+	writer->writeAt(pos, bytevect(pChecksum, pChecksum + checksumSize));
 }

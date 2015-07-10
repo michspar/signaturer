@@ -4,10 +4,8 @@
 using namespace boost::interprocess;
 
 blockWriter::blockWriter(const string &path, int byteBlockSize, int blocksCount) :
-	byteBlockSize_(byteBlockSize),
 	path_(path),
-	fileSize_(boost::filesystem::file_size(path)),
-	blocks_(int(fileSize_ / byteBlockSize) + (fileSize_ % byteBlockSize ? 1 : 0))
+	blocks_(blocksCount)
 {
 }
 
@@ -19,7 +17,7 @@ blockWriter::~blockWriter()
 		out.write(block.data(), block.size());
 }
 
-void blockWriter::writeAt(long long position, const bytevect &block)
+void blockWriter::writeAt(int position, const bytevect &block)
 {
 	blocks_[position] = block;
 }
