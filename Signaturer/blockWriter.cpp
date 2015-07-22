@@ -11,10 +11,17 @@ blockWriter::blockWriter(const string &path, int byteBlockSize, int blocksCount)
 
 blockWriter::~blockWriter()
 {
-	std::ofstream out(path_, std::ios::binary);
+	try
+	{
+		std::ofstream out(path_, std::ios::binary);
 
-	for (auto block : blocks_)
-		out.write(block.data(), block.size());
+		for (auto block : blocks_)
+			out.write(block.data(), block.size());
+	}
+	catch (const std::exception & e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 }
 
 void blockWriter::writeAt(int position, const bytevect &block)
